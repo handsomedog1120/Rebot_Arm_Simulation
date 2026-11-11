@@ -1,0 +1,19 @@
+# ROS 2 编译文件
+build/
+install/
+log/
+
+# Docker 开发环境
+.devcontainer/
+
+# VS Code 配置
+.vscode/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 临时文件
+*.log
+.DS_Store
