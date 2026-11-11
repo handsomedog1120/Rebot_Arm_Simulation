@@ -1,1 +1,1 @@
-关于Rebot_Arm的仿真代码
+关于Rebot_Arm的仿真代码（已经完成gazebo的相关配置，可作为基础开发）
