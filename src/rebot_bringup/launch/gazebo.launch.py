@@ -16,12 +16,23 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     pkg_dir = get_package_share_directory('rebotarm_description')
     urdf_config = os.path.join(pkg_dir, 'urdf', 'RS', 'urdf', 'ReBot_Arm_RS.urdf')
+    # Gazebo 专用 ros2_control 片段（GazeboSystem + gazebo_ros2_control 插件），
+    # 单独存放以避免 MoveIt 的 FakeSystem URDF 里出现两个 ros2_control 块。
+    gazebo_ros2_control_snippet = os.path.join(
+        pkg_dir, 'urdf', 'RS', 'urdf', 'ReBot_Arm_RS.gazebo_ros2_control.xml'
+    )
 
     bringup_share = get_package_share_directory('rebot_bringup')
     controllers_yaml = os.path.join(bringup_share, 'config', 'rebot_controllers.yaml')
 
     with open(urdf_config, 'r') as e:
-        rebot_description = e.read().replace('__CONTROLLERS_YAML__', controllers_yaml)
+        rebot_description = e.read()
+
+    with open(gazebo_ros2_control_snippet, 'r') as f:
+        snippet = f.read().replace('__CONTROLLERS_YAML__', controllers_yaml)
+
+    # 把 Gazebo 专用 ros2_control 片段插到 </robot> 之前
+    rebot_description = rebot_description.replace('</robot>', snippet + '</robot>')
 
     # gazebo_ros2_control 会把整段 robot_description 作为 --param 命令行参数传给
     # controller_manager，XML 注释里的 "Version: 1.6.0" 这类 "冒号+空格" 会破坏

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ReBot_Arm_RS">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import ReBot_Arm_RS urdf file -->
+    <xacro:include filename="$(find rebotarm_description)/urdf/RS/urdf/ReBot_Arm_RS.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="ReBot_Arm_RS.ros2_control.xacro" />
+
+
+    <xacro:ReBot_Arm_RS_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>
